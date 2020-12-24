@@ -1,86 +1,42 @@
-const canvas = document.getElementById('canvas')
-const ctx = canvas.getContext('2d')
-const canvasWidth = 400
-const canvasHeight = 400
+"use strict";
 
-canvas.width = canvasWidth
-canvas.height = canvasHeight
-
-const horizonLength = 100
-const verticalLength = 150
-const lineWidth = 16
-const ident = 22
-const shapeWidth = horizonLength + (ident * 2) + (lineWidth * 2)
-const shapeHeight = verticalLength + ident + lineWidth
-
-let x = (canvasWidth - shapeWidth) / 2
-let y = (canvasHeight - shapeHeight) / 2
-const step = 25
-
-ctx.fillStyle = '#fff'
-
-renderCanvas = (x, y) => {
-	ctx.fillRect(x + lineWidth + ident, y, horizonLength, lineWidth) // горизонт
-	ctx.fillRect(x, y + lineWidth + ident, lineWidth, verticalLength) // левая
-	ctx.fillRect(x + horizonLength + (ident * 2) + lineWidth, y + lineWidth + ident, lineWidth, verticalLength) // правая
+function foo(callback) {
+	setTimeout(function () {
+		callback('A');
+	}, Math.random() * 100);
 }
 
-renderCanvas(x, y)
+function bar(callback) {
+	setTimeout(function () {
+		callback('B');
+	}, Math.random() * 100);
+}
 
-document.addEventListener('keydown', (e) => {
-	const { code } = e
+function baz(callback) {
+	setTimeout(function () {
+		callback('C');
+	}, Math.random() * 100);
+}
 
-	ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+queue(foo, bar, baz);
 
-	if (code === 'ArrowUp') {
-		y = y - step
-	} else if (code === 'ArrowDown') {
-		y = y + step
-	} else if (code === 'ArrowLeft') {
-		x = x - step
-	} else if (code === 'ArrowRight') {
-		x = x + step
-	}
+function cb(str) {
+	console.log(str);
+}
 
-	renderCanvas(x, y)
+function queue(...fns) {
 
-	if (x > canvasWidth - shapeWidth) {
-		renderCanvas(x - canvasWidth, y)
-	}
+	fns.reduce((acc, fn) => {
 
-	if (x < 0) {
-		renderCanvas(canvasWidth + x, y)
-	}
+		if (!acc) {
+			console.log(fn);
 
-	if (y < 0) {
-		renderCanvas(x, canvasHeight + y)
-	}
+			return new Promise(resolve => resolve(fn(cb)));
+		} else {
+			console.log(fn);
 
-	if (y > canvasHeight - shapeHeight) {
-		renderCanvas(x, y - canvasHeight)
-	}
+			return new Promise(resolve => acc.then(() => resolve(fn(cb))));
+		}
 
-	if (x > canvasWidth - shapeWidth && y > canvasHeight - shapeHeight) {
-		renderCanvas(x - canvasWidth, y - canvasHeight)
-	}
-
-	if (x < 0 && y < 0 ) {
-		renderCanvas(x + canvasWidth, y + canvasHeight)
-	}
-
-	if (x < 0 && y > canvasHeight - shapeHeight) {
-		renderCanvas(x + canvasWidth, y - canvasHeight)
-	}
-
-	if (x > canvasWidth - shapeWidth && y < 0) {
-		renderCanvas(x - canvasWidth, y + canvasHeight)
-	}
-
-	if (x === (canvasWidth + (canvasWidth - shapeWidth) / 2) || x === -canvasWidth + (canvasWidth - shapeWidth) / 2) {
-		x = (canvasWidth - shapeWidth) / 2
-	}
-
-	if (y === (canvasHeight + (canvasHeight - shapeHeight) / 2) || y === -canvasHeight + (canvasHeight - shapeHeight) / 2) {
-		y = (canvasHeight - shapeHeight) / 2
-	}
-})
+	}, null);
+}
