@@ -14,6 +14,7 @@ function last(list) {
 	}
 }
 
+
 // Возвращает первый элемент массива
 function first(list) {
 	if (Array.isArray(list)) {
@@ -28,10 +29,12 @@ function first(list) {
 	}
 }
 
+
 // Возвращает массив с задаными параметрами
 function rangeRight(start, end, step) {
 	return range(start, end, step, true);
 }
+
 
 function range(start = 0, end, step = 1, isRight) {
 
@@ -41,35 +44,36 @@ function range(start = 0, end, step = 1, isRight) {
 		} else {
 			if (start < 0) {
 				if (isRight) {
-					return Array( Math.abs(start) ).fill()
+					return Array(Math.abs(start)).fill()
 						.map((_, i) => i === 0 ? 0 : -i).reverse();
 				} else {
-					return Array( Math.abs(start) ).fill().map((_, i) => i === 0 ? 0 : -i);
+					return Array(Math.abs(start)).fill().map((_, i) => i === 0 ? 0 : -i);
 				}
 			} else {
 				if (isRight) {
-					return Array( start ).fill().map((_, i) => i).reverse();
+					return Array(start).fill().map((_, i) => i).reverse();
 				} else {
-					return Array( start ).fill().map((_, i) => i);
+					return Array(start).fill().map((_, i) => i);
 				}
 			}
 		}
 	} else {
 		if (step === 0) {
-			return Array( Math.abs( end ) - Math.abs( start ) ).fill(start)
+			return Array(Math.abs(end) - Math.abs(start)).fill(start)
 		} else {
 			if (isRight) {
-				return Array( Math.abs( end ) - Math.abs( start ) ).fill()
+				return Array(Math.abs(end) - Math.abs(start)).fill()
 					.map((_, i) => end < 0 ? -(i + start) : i + start)
 					.filter((num, i) => i % step === 0).reverse();
 			} else {
-				return Array( Math.abs( end ) - Math.abs( start ) ).fill()
+				return Array(Math.abs(end) - Math.abs(start)).fill()
 					.map((_, i) => end < 0 ? -(i + start) : i + start)
 					.filter((num, i) => i % step === 0);
 			}
 		}
 	}
 }
+
 
 function isEmpty(value) {
 
@@ -151,3 +155,70 @@ function isEmpty(value) {
 
 // console.log('new Set() = ', true === isEmpty(new Set()));
 // console.log('new Set().add("1") = ', false === isEmpty(new Set().add('1')));
+
+
+function binarySearch(list, element) {
+	let startIndex = 0;
+	let endIndex = list.length;
+
+	while (startIndex < endIndex) {
+		const middleIndex = Math.floor((startIndex + endIndex) / 2);
+		const value = list[middleIndex];
+
+		if (value === element) {
+			return middleIndex;
+		} else {
+
+			if (value < element) {
+				startIndex = middleIndex + 1;
+			} else {
+				endIndex = middleIndex;
+			}
+		}
+	}
+
+	return -1;
+}
+
+// const list = [1, 3, 4, 5, 7, 10];
+// const list = [];
+
+// console.log(binarySearch(list, 10));
+// console.log(binarySearch(list, 99));
+
+
+function palindrome(str) {
+
+	let startIndex = 0;
+	let endIndex = str.length - 1;
+
+	while (startIndex < endIndex) {
+		const firstChar = str[startIndex].toLowerCase();
+		const endChar = str[endIndex].toLowerCase();
+
+		if (firstChar === endChar) {
+			startIndex++;
+			endIndex--;
+			continue;
+		} else {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+function palindromeRev(str) {
+	const strRev = str.toLowerCase().split('').reverse().join('');
+
+	if (str === strRev) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// console.log(palindromeRev('racecar'));
+// console.log(palindromeRev('table'));
+
+
