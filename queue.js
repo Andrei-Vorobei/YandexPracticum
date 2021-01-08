@@ -18,7 +18,8 @@ function baz(callback) {
 	}, Math.random() * 100);
 }
 
-queue(foo, bar, baz);
+// queue(foo, bar, baz);
+queueAlt(foo, bar, baz);
 
 function queue(...fns) {
 	fns.reduce((acc, fn) => {
@@ -26,4 +27,14 @@ function queue(...fns) {
 			acc.then(() => fn(resolve));
 		}).then(res => console.log(res));
 	}, Promise.resolve());
+}
+
+function queueAlt(...fns) {
+	const promises = fns.map(fn => {
+		return new Promise(resolve => {
+			fn(resolve);
+		});
+	});
+
+	Promise.all(promises).then(promise => promise.forEach(promise => console.log(promise)));
 }
