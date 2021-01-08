@@ -21,14 +21,9 @@ function baz(callback) {
 queue(foo, bar, baz);
 
 function queue(...fns) {
-
 	fns.reduce((acc, fn) => {
-
-		if (!acc) {
-			return new Promise(resolve => fn(resolve)).then(str => console.log(str));
-		} else {
-			return new Promise(resolve => acc.then(() => fn(resolve))).then(str => console.log(str));
-		}
-
-	}, null);
+		return new Promise(resolve => {
+			acc.then(() => fn(resolve));
+		}).then(res => console.log(res));
+	}, Promise.resolve());
 }
