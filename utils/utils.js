@@ -74,6 +74,113 @@ function range(start = 0, end, step = 1, isRight) {
 	}
 }
 
+function rangeAlt(start = 0, end, step = 1, isRight) {
+	if (!isRight) {
+
+		if (end === undefined) {
+			if (start === 0) {
+				return [];
+			} else if (start === -1) {
+				return [0];
+			} else if (start < 0) {
+				let a = [];
+
+				for (let i = 0; i < Math.abs(start); i++) {
+					a.push(-i);
+				}
+
+				return a;
+			} else if (start > 0) {
+				let a = [];
+
+				for (let i = 0; i < start; i++) {
+					a.push(i);
+				}
+
+				return a;
+			}
+		} else {
+			if (step === 0) {
+
+				let a = [];
+
+				for (let i = 0; i < Math.abs(end - start); i++) {
+					a.push(start);
+				}
+
+				return a;
+			} else {
+				if (end === start) {
+					return [];
+				} else {
+					if (end < 0 && step > 0) {
+						step = -step;
+					}
+
+					let a = [];
+		
+					for (let i = start; Math.abs(i) < Math.abs(end); i += step) {
+						a.push(i);
+					}
+		
+					return a;
+				}
+			}
+		}
+	} else {
+		if (end === undefined) {
+			if (start === 0) {
+				return [];
+			} else if (start === -1) {
+				return [0];
+			} else if (start < 0) {
+				let a = [];
+
+				for (let i = 0; i < Math.abs(start); i++) {
+					a.push(-i);
+				}
+
+				return a.reverse();
+			} else if (start > 0) {
+				let a = [];
+
+				for (let i = 0; i < start; i++) {
+					a.push(i);
+				}
+
+				return a.reverse();
+			}
+		} else {
+			if (step === 0) {
+
+				let a = [];
+
+				for (let i = 0; i < Math.abs(end - start); i++) {
+					a.push(start);
+				}
+
+				return a.reverse();
+			} else {
+				if (end === start) {
+					return [];
+				} else {
+					if (end < 0 && step > 0) {
+						step = -step;
+					}
+
+					let a = [];
+		
+					for (let i = start; Math.abs(i) < Math.abs(end); i += step) {
+						a.push(i);
+					}
+		
+					return a.reverse();
+				}
+			}
+		}
+	}
+}
+
 
 function isEmpty(value) {
 
